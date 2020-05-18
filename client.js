@@ -13,14 +13,21 @@ const socket = io('wss://le-18262636.bitzonte.com', {
 
 const companies_names = [];
 const valor_acciones_tiempo = [];
-const companies_dict = {"AAPL": [], "FB": [], "SNAP": [], "IBM": [], "TWTR": []};
+const companies_dict = {};
 const buyDict = {"AAPL": [], "FB": [], "SNAP": [], "IBM": [], "TWTR": []};
 
 socket.emit('STOCKS');
 socket.on('STOCKS', (data) => {    
-    for (var i in data) {
-      companies_names.push(data[i].company_name)
-    }
+    // for (var i in data) {
+    //   companies_names.push(data[i].company_name)
+    // }
+    for (var i = 0; i < data.length; i++) {
+      companies_dict[data[i].ticker] = [];
+      var grafico = document.createElement('div');
+      console.log(`${data[i].ticker}` );
+      grafico.setAttribute("id", `${data[i].ticker}`);
+      acciones.appendChild(grafico);
+      }
 
     socket.on('UPDATE', (data) => {
       x = document.getElementById('ticker');
@@ -32,8 +39,12 @@ socket.on('STOCKS', (data) => {
       // companies_dict[data.ticker].push([data.time, data.value]);
       // dibujarGrafico(data, companies_dict);
       companies_dict[data.ticker].push([data.time, data.value]);
-      if(data.ticker == "FB"){
-        drawChart(companies_dict[data.ticker]);
+      companies_dict [data.ticker].push([data.time, data.value]);
+      for (var key in companies_dict ) {
+        if(data.ticker == key){
+          drawChart(companies_dict [data.ticker], key);
+        };
+      };
         const obj = [{
           "key": data.ticker,
           "value":  data.value,
@@ -57,7 +68,7 @@ socket.on('STOCKS', (data) => {
             tbody.innerHTML = tr;
         }
 
-      };
+   
     } );
 
 
@@ -115,7 +126,7 @@ function ManualSocketConnect() {
 google.charts.load('current', {'packages':['line']});
       //google.charts.setOnLoadCallback(drawChart);
 
-    function drawChart(datos) {
+    function drawChart(datos, id) {
 
       var data = new google.visualization.DataTable();
       data.addColumn('number', 'time');
@@ -134,7 +145,7 @@ google.charts.load('current', {'packages':['line']});
         height: 500
       };
 
-      var chart = new google.charts.Line(document.getElementById('linechart_material'));
+      var chart = new google.charts.Line(document.getElementById(id));
 
       chart.draw(data, google.charts.Line.convertOptions(options));
     }
