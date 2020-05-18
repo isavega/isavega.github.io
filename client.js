@@ -14,6 +14,7 @@ const socket = io('wss://le-18262636.bitzonte.com', {
 const companies_names = [];
 const valor_acciones_tiempo = [];
 const companies_dict = {"AAPL": [], "FB": [], "SNAP": [], "IBM": [], "TWTR": []};
+const buyDict = {"AAPL": [], "FB": [], "SNAP": [], "IBM": [], "TWTR": []};
 
 socket.emit('STOCKS');
 socket.on('STOCKS', (data) => {    
@@ -54,6 +55,27 @@ socket.on('STOCKS', (data) => {
         
             /* We add the table row to the table body */
             tbody.innerHTML = tr;
+        }
+
+      };
+    } );
+
+
+    socket.on('BUY', (data) => {
+      buyDict[data.ticker].push(data.volume);
+      if(data.ticker == "FB"){
+        const obj2 = [{
+          "key": data.ticker,
+          "value":  data.volume,
+        }];
+
+        var tbody2 = document.getElementById('tbody2');
+        var tr2 = "<tr>";
+        var suma = 0;
+        for (var i = 0; i < obj2.length; i++) {
+            suma += obj2[i].value
+            tr2 += "<td>" + obj2[0].key + "</td>" + "<td>$" +  suma.toString() + "</td></tr>";
+            tbody2.innerHTML = tr2;
         }
 
       };
