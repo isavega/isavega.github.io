@@ -42,7 +42,8 @@ socket.on('STOCKS', (data) => {
       companies_dict [data.ticker].push([data.time, data.value]);
       for (var key in companies_dict ) {
         if(data.ticker == key){
-          drawChart(companies_dict [data.ticker], key);
+          var nombre_grafico = `${data.ticker}`
+          drawChart(companies_dict [data.ticker], key,nombre_grafico);
         };
       };
         const obj = [{
@@ -126,7 +127,7 @@ function ManualSocketConnect() {
 google.charts.load('current', {'packages':['line']});
       //google.charts.setOnLoadCallback(drawChart);
 
-    function drawChart(datos, id) {
+    function drawChart(datos, id, nombre) {
 
       var data = new google.visualization.DataTable();
       data.addColumn('number', 'time');
@@ -139,10 +140,10 @@ google.charts.load('current', {'packages':['line']});
 
       var options = {
         chart: {
-          title: 'Grafico'
+          title: 'Accion de '+nombre
         },
         width: 900,
-        height: 500
+        height: 250
       };
 
       var chart = new google.charts.Line(document.getElementById(id));
