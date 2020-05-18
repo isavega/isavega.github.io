@@ -1,1 +1,67 @@
-Hello World
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+<script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="style.css">
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+<script src="/script/logic.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+</head>
+
+<body>
+
+<section class="et-hero-tabs">
+  <h1>Mercado WebSocket</h1>
+  <div class="tile_div">
+    <button id="on" onclick="ManualSocketConnect()">Conectar</button>
+    <button id="off" onclick="ManualSocketDisconnect()">Desconectar</button>
+    <div class="clear"></div>
+</div>
+
+  <div class="et-hero-tabs-container">
+    <a class="et-hero-tab" href="#tab-es6">Ticker</a>
+    <a class="et-hero-tab" href="#tab-flexbox">Valor</a>
+    <a class="et-hero-tab" href="#tab-react">Tiempo</a>
+    <a class="et-hero-tab" href="#tab-angular">Mercado</a>
+    <a class="et-hero-tab" href="#tab-other">Other</a>
+    <span class="et-hero-tab-slider"></span>
+  </div>
+</section>
+
+<!-- Main -->
+<main class="et-main">
+  <section class="et-slide" id="tab-es6">
+    <h1>Ticker</h1>
+    <div id="ticker"></div>
+  </section>
+  <section class="et-slide" id="tab-flexbox">
+    <h1>Valor</h1>
+    <div id="value"></div>
+  </section>
+  <section class="et-slide" id="tab-react">
+    <h1>Tiempo</h1>
+    <div id="time"> </div>
+  </section>
+  <section class="et-slide" id="tab-angular">
+    <h1>Mercado</h1>
+    <div id="linechart_material"></div>
+
+  </section>
+  <section class="et-slide" id="tab-other">
+    <h1>Other</h1>
+    <h3>something about other</h3>
+  </section>
+</main>
+
+<script src= "client.js"></script> 
+
+</body>
+</html>
+
