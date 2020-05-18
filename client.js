@@ -62,7 +62,7 @@ socket.on('STOCKS', (data) => {
         
             // /* Must not forget the $ sign */
             // tr += "<td>" + obj[0].key + "</td>" + "<td>$" + obj[i].value.toString() + "</td></tr>";
-            tr = "<td>$" + obj[i].value.toString() + "</td></tr>";
+            tr = "<td>Alto historico: $" + obj[i].value.toString() + "</td></tr>";
         
         
             /* We add the table row to the table body */
@@ -86,7 +86,7 @@ socket.on('STOCKS', (data) => {
         var suma = 0;
         for (var i = 0; i < obj2.length; i++) {
             suma += obj2[i].value
-            tr2 += "<td>" + obj2[0].key + "</td>" + "<td>$" +  suma.toString() + "</td></tr>";
+            tr2 += "<td>Volumen total transado: " + obj2[0].key + "</td>" + "<td>$" +  suma.toString() + "</td></tr>";
             tbody2.innerHTML = tr2;
         }
 
@@ -96,16 +96,6 @@ socket.on('STOCKS', (data) => {
 });
 
 
-
-
-
-// function dibujarGrafico(data, companies_dict) {
-//   for (var i in companies_dict) {
-//     if(data.ticker in companies_dict){
-//       drawChart(companies_dict[data.ticker]);
-//     }
-//   }
-// }
 
 
 function ManualSocketDisconnect() {
