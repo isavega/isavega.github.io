@@ -4,47 +4,75 @@ const socket = io('wss://le-18262636.bitzonte.com', {
     path: '/stocks'
 });
 
-socket.on('EXCHANGES', (data) => {
-  console.log(data);
-  x = document.getElementById('stocks');
-  x.innerHTML = data.ticker;
-
-} );
 
 
-dict = {"AAPL": [], "FB": [], "SNAP": [], "IBM": [], "TWTR": []};
 
 // EVENTOS
 
 // Emitidos por el servidor
 
-socket.on('UPDATE', (data) => {
-  console.log(data);
-  x = document.getElementById('ticker');
-  x.innerHTML = data.ticker;
-  y = document.getElementById('value');
-  y.innerHTML = data.value;
-  z = document.getElementById('time');
-  z.innerHTML = data.time;
-  dict[data.ticker].push([data.time, data.value]);
-  if(data.ticker == "FB"){
-    drawChart(dict[data.ticker]);
-  };
-} );
+const companies_names = [];
+const valor_acciones_tiempo = [];
+const companies_dict = {"AAPL": [], "FB": [], "SNAP": [], "IBM": [], "TWTR": []};
 
-socket.on('UPDATE', (data) => {
-  console.log(data);
-  x = document.getElementById('ticker');
-  x.innerHTML = data.ticker;
-  y = document.getElementById('value');
-  y.innerHTML = data.value;
-  z = document.getElementById('time');
-  z.innerHTML = data.time;
-  dict[data.ticker].push([data.time, data.value]);
-  if(data.ticker == "FB"){
-    drawChart(dict[data.ticker]);
-  };
-} );
+socket.emit('STOCKS');
+socket.on('STOCKS', (data) => {    
+    for (var i in data) {
+      companies_names.push(data[i].company_name)
+    }
+
+    socket.on('UPDATE', (data) => {
+      x = document.getElementById('ticker');
+      x.innerHTML = data.ticker;
+      y = document.getElementById('value');
+      y.innerHTML = data.value;
+      z = document.getElementById('time');
+      z.innerHTML = data.time;
+      // companies_dict[data.ticker].push([data.time, data.value]);
+      // dibujarGrafico(data, companies_dict);
+      companies_dict[data.ticker].push([data.time, data.value]);
+      if(data.ticker == "FB"){
+        drawChart(companies_dict[data.ticker]);
+        const obj = [{
+          "key": data.ticker,
+          "value":  data.value,
+        }];
+
+        var tbody = document.getElementById('tbody');
+        var tr = "<tr>";
+        for (var i = 0; i < obj.length; i++) {
+            
+        
+            // /* Verification to add the last decimal 0 */
+            // if (obj[i].value.toString().substring(obj[i].value.toString().indexOf('.'), obj[i].value.toString().length) < 2) 
+            //     obj[i].value += "0";
+        
+            // /* Must not forget the $ sign */
+            // tr += "<td>" + obj[0].key + "</td>" + "<td>$" + obj[i].value.toString() + "</td></tr>";
+            tr = "<td>$" + obj[i].value.toString() + "</td></tr>";
+        
+        
+            /* We add the table row to the table body */
+            tbody.innerHTML = tr;
+        }
+
+      };
+    } );
+
+});
+
+
+
+
+
+// function dibujarGrafico(data, companies_dict) {
+//   for (var i in companies_dict) {
+//     if(data.ticker in companies_dict){
+//       drawChart(companies_dict[data.ticker]);
+//     }
+//   }
+// }
+
 
 function ManualSocketDisconnect() {
   socket.emit("manual-disconnection", socket.id);
@@ -57,6 +85,9 @@ function ManualSocketConnect() {
   socket.open();
   console.log("Socket open ");
 }
+
+
+
 
 
 google.charts.load('current', {'packages':['line']});
@@ -85,3 +116,5 @@ google.charts.load('current', {'packages':['line']});
 
       chart.draw(data, google.charts.Line.convertOptions(options));
     }
+
+
