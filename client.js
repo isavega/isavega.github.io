@@ -121,7 +121,14 @@ function ManualSocketConnect() {
 }
 
 
-
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
 
 
 google.charts.load('current', {'packages':['line']});
@@ -130,8 +137,8 @@ google.charts.load('current', {'packages':['line']});
     function drawChart(datos, id, nombre) {
 
       var data = new google.visualization.DataTable();
-      data.addColumn('number', 'time');
-      data.addColumn('number', 'Value');
+      data.addColumn('number', 'Tiempo');
+      data.addColumn('number', 'Valor');
 
 
       data.addRows(
@@ -143,7 +150,8 @@ google.charts.load('current', {'packages':['line']});
           title: 'Accion de '+nombre
         },
         width: 900,
-        height: 250
+        height: 250,
+        colors: getRandomColor(),
       };
 
       var chart = new google.charts.Line(document.getElementById(id));
