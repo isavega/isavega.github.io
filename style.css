@@ -139,13 +139,14 @@ button {
 /* Graficos */
 
 #tab-angular{
-    margin: 600px;
-    padding: 30px;
+    background: white;
+    margin-top: 600px;
+    margin-bottom: 800px;
+    padding: 100px;
 }
 
 #acciones {
-    margin: 80px;
-    padding: 30px;
+    padding-top: 100px;
 }
 
 /* Tabla 1 */
