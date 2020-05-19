@@ -148,7 +148,7 @@ button {
     padding: 30px;
 }
 
-/* Tabla */
+/* Tabla 1 */
 
 
 #customers {
@@ -173,3 +173,30 @@ text-align: left;
 background-color: #034054;
 color: white;
 }
+
+/* Tabla 2 */
+
+
+#infotabla {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 80%;
+    margin: 100px;
+    }
+    
+    #infotabla td, #infotabla th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    }
+    
+    #infotabla tr:nth-child(even){background-color: #97CFE1;}
+    
+    #infotabla tr:hover {background-color: #ddd;}
+    
+    #infotabla th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color:black;
+    color: white;
+    }

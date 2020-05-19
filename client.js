@@ -29,12 +29,6 @@ function ManualSocketConnect() {
 
 function getUpdate() {
   socket.on('UPDATE', (data) => {
-    // ticker = document.getElementById('ticker');
-    // ticker.innerHTML = data.ticker;
-    // valor = document.getElementById('valor');
-    // valor.innerHTML = data.value;
-    // time = document.getElementById('time');
-    // time.innerHTML = data.time;
 
     companies_dict[data.ticker].push([data.time, data.value]);
     companies_dict [data.ticker].push([data.time, data.value]);
@@ -51,10 +45,7 @@ function getUpdate() {
        
       };
     };
-
-    console.log("TODOOS",todos);
-    getLastPrice(todos);
-    
+    getLastPrice(todos);    
   } );
 }
 
@@ -105,6 +96,14 @@ function getVolume(diccionario) {
 
 }
 
+function addTableSockets(nombre, ticker, pais, id_nombre ) {
+  var titulo = "<table><tr><th>Nombre</th><th>Ticker</th><th>Pais</th>";
+  var informacion = "<tr><th>"+nombre+"</th><th>"+ticker+"</th><th>"+pais+"</th></table>"; 
+  var html = titulo+informacion;   
+  document.getElementById("infotabla").innerHTML = html;
+}
+
+
 
 // Google Charts 
 
@@ -142,17 +141,16 @@ google.charts.load('current', {'packages':['line']});
 
 function runSocket() {
 
+  // se entregan todas las empresas listadas en la bolsa
+
   socket.emit('STOCKS');
   socket.on('STOCKS', (data) => {    
-      // for (var i in data) {
-      //   companies_names.push(data[i].company_name)
-      // }
       for (var i = 0; i < data.length; i++) {
         companies_dict[data[i].ticker] = [];
         var grafico = document.createElement('div');
-        console.log(`${data[i].ticker}` );
         grafico.setAttribute("id", `${data[i].ticker}`);
         acciones.appendChild(grafico);
+        addTableSockets(data[i].company_name, data[i].ticker, data[i].country);
         }
   
       getUpdate();    
