@@ -4,17 +4,15 @@ const socket = io('wss://le-18262636.bitzonte.com', {
     path: '/stocks'
 });
 
-
-
-
 // EVENTOS
 
-// Emitidos por el servidor
+// Emitidos y recibidos por el servidor
 
 const companies_names = [];
 const valor_acciones_tiempo = [];
 const companies_dict = {};
 const buyDict = {"AAPL": [], "FB": [], "SNAP": [], "IBM": [], "TWTR": []};
+let todos = [];
 
 socket.emit('STOCKS');
 socket.on('STOCKS', (data) => {    
@@ -30,48 +28,33 @@ socket.on('STOCKS', (data) => {
       }
 
     socket.on('UPDATE', (data) => {
-      x = document.getElementById('ticker');
-      x.innerHTML = data.ticker;
-      y = document.getElementById('value');
-      y.innerHTML = data.value;
-      z = document.getElementById('time');
-      z.innerHTML = data.time;
-      // companies_dict[data.ticker].push([data.time, data.value]);
-      // dibujarGrafico(data, companies_dict);
+      ticker = document.getElementById('ticker');
+      ticker.innerHTML = data.ticker;
+      value = document.getElementById('value');
+      value.innerHTML = data.value;
+      time = document.getElementById('time');
+      time.innerHTML = data.time;
+
       companies_dict[data.ticker].push([data.time, data.value]);
       companies_dict [data.ticker].push([data.time, data.value]);
-      for (var key in companies_dict ) {
-        if(data.ticker == key){
-          var nombre_grafico = `${data.ticker}`
-          drawChart(companies_dict [data.ticker], key,nombre_grafico);
+
+    
+      for (var i in companies_dict ) {
+        if(data.ticker == i){
+          var nombre_grafico = `${data.ticker}`;
+          drawChart(companies_dict [data.ticker], i, nombre_grafico);
+          todos.push({
+            "key": data.ticker,
+            "value":  data.value,
+          });
+         
         };
       };
-        const obj = [{
-          "key": data.ticker,
-          "value":  data.value,
-        }];
 
-        var tbody = document.getElementById('tbody');
-        var tr = "<tr>";
-        for (var i = 0; i < obj.length; i++) {
-            
-        
-            // /* Verification to add the last decimal 0 */
-            // if (obj[i].value.toString().substring(obj[i].value.toString().indexOf('.'), obj[i].value.toString().length) < 2) 
-            //     obj[i].value += "0";
-        
-            // /* Must not forget the $ sign */
-            // tr += "<td>" + obj[0].key + "</td>" + "<td>$" + obj[i].value.toString() + "</td></tr>";
-            tr = "<td>Alto historico: $" + obj[i].value.toString() + "</td></tr>";
-        
-        
-            /* We add the table row to the table body */
-            tbody.innerHTML = tr;
-        }
-
-   
+      console.log("TODOOS",todos);
+      getLastPrice(todos);
+      
     } );
-
 
     socket.on('BUY', (data) => {
       buyDict[data.ticker].push(data.volume);
@@ -80,23 +63,14 @@ socket.on('STOCKS', (data) => {
           "key": data.ticker,
           "value":  data.volume,
         }];
-
-        var tbody2 = document.getElementById('tbody2');
-        var tr2 = "<tr>";
-        var suma = 0;
-        for (var i = 0; i < obj2.length; i++) {
-            suma += obj2[i].value
-            tr2 += "<td>Volumen total transado: " + obj2[0].key + "</td>" + "<td>$" +  suma.toString() + "</td></tr>";
-            tbody2.innerHTML = tr2;
-        }
-
+        getVolume(obj2)
       };
     } );
 
 });
 
 
-
+// Funciones
 
 function ManualSocketDisconnect() {
   socket.emit("manual-disconnection", socket.id);
@@ -118,6 +92,31 @@ function getRandomColor() {
     color += letters[Math.floor(Math.random() * 16)];
   }
   return color;
+}
+
+function getLastPrice(diccionario) {
+
+        
+  var tbody = document.getElementById('tbody');
+  var tr = "<tr>";
+  for (var i = 0; i < diccionario.length; i++) {
+      tr = "<td>Ultimo precio de "+diccionario[0].key+": $" + diccionario[i].value.toString() + "</td></tr>";
+      tbody.innerHTML = tr;
+  }
+
+}
+
+function getVolume(diccionario) {
+
+  var tbody2 = document.getElementById('tbody2');
+  var tr2 = "<tr>";
+  var suma_volumen = 0;
+  for (var i = 0; i < diccionario.length; i++) {
+    suma_volumen += diccionario[i].value
+      tr2 += "<td>Volumen total transado: " +diccionario[0].key + "</td>" + "<td>$" +  suma_volumen.toString() + "</td></tr>";
+      tbody2.innerHTML = tr2;
+        }
+
 }
 
 
