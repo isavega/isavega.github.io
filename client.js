@@ -29,12 +29,12 @@ function ManualSocketConnect() {
 
 function getUpdate() {
   socket.on('UPDATE', (data) => {
-    ticker = document.getElementById('ticker');
-    ticker.innerHTML = data.ticker;
-    value = document.getElementById('value');
-    value.innerHTML = data.value;
-    time = document.getElementById('time');
-    time.innerHTML = data.time;
+    // ticker = document.getElementById('ticker');
+    // ticker.innerHTML = data.ticker;
+    // valor = document.getElementById('valor');
+    // valor.innerHTML = data.value;
+    // time = document.getElementById('time');
+    // time.innerHTML = data.time;
 
     companies_dict[data.ticker].push([data.time, data.value]);
     companies_dict [data.ticker].push([data.time, data.value]);
@@ -115,7 +115,7 @@ google.charts.load('current', {'packages':['line']});
 
       var data = new google.visualization.DataTable();
       data.addColumn('number', 'Tiempo');
-      data.addColumn('number', 'Valor');
+      data.addColumn('number', 'Valor Accion');
 
 
       data.addRows(
