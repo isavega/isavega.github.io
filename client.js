@@ -9,7 +9,7 @@ const socket = io('wss://le-18262636.bitzonte.com', {
 const companies_names = [];
 const valor_acciones_tiempo = [];
 const companies_dict = {};
-const buyDict = {"AAPL": [], "FB": [], "SNAP": [], "IBM": [], "TWTR": []};
+const buyDict = {};
 let todos = [];
 
 
@@ -147,6 +147,7 @@ function runSocket() {
   socket.on('STOCKS', (data) => {    
       for (var i = 0; i < data.length; i++) {
         companies_dict[data[i].ticker] = [];
+        buyDict[data[i].ticker] = [];
         var grafico = document.createElement('div');
         grafico.setAttribute("id", `${data[i].ticker}`);
         acciones.appendChild(grafico);
