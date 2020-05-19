@@ -57,7 +57,7 @@ function getBuy() {
         "key": data.ticker,
         "value":  data.volume,
       }];
-      getVolume(obj2)
+      getVolume(obj2);
     };
   } );
 }
@@ -87,12 +87,21 @@ function getVolume(diccionario) {
 
   var tbody2 = document.getElementById('tbody2');
   var tr2 = "<tr>";
+  var tr3_titulo = "<tr>";
+  var tr3_info = "<tr>";
   var suma_volumen = 0;
   for (var i = 0; i < diccionario.length; i++) {
     suma_volumen += diccionario[i].value
       tr2 += "<td>Volumen total transado: " +diccionario[0].key + "</td>" + "<td>$" +  suma_volumen.toString() + "</td></tr>";
+      
+      tr3_titulo += "<th>Empresa</th><th>Volumen de Compra</th><th>Volumen de Venta</th><th>Volumen Total</th><th>Cantidad de acciones</th><th>Participacion de mercado</th>";
+      tr3_info += "<th>"+diccionario[0].key+"</th><th>"+suma_volumen.toString()+"</th><th>Volumen de Venta</th><th>Volumen Total</th><th>Cantidad de acciones</th><th>Participacion de mercado</th>";
+      
+      var tr3 = tr3_titulo+tr3_info;
+
       tbody2.innerHTML = tr2;
-        }
+      tbody3.innerHTML = tr3;
+   }
 
 }
 
